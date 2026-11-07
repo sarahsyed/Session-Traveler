@@ -5,9 +5,19 @@ class App extends Component {
   updateMessage = event => this.setState({ message: event.target.value });
   componentDidMount() {
     // TODO: read from local storage, and if we find a message there, log it to the console
+    const stateString = localStorage.getItem("stateString");
+    if (stateString) {
+      const savedState = JSON.parse(stateString);
+      this.setState({ message: savedState.message });
+    }
   }
+
   componentDidUpdate() {
     // TODO: save the message from our component's state to the browser's local storage
+      const stateString = JSON.stringify(this.state);
+    localStorage.setItem("stateString", JSON.stringify(this.state));
+    console.log("Saved state to local storage:", stateString);
+
   }
   render() {
     return (
@@ -19,6 +29,8 @@ class App extends Component {
           value={this.state.message}
           onChange={this.updateMessage}
         />
+            
+
         <p>Type a message above, then refresh this page.</p>
         <p>
           After refreshing this site, check your developer console to see the
